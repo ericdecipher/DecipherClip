@@ -1,0 +1,4029 @@
+= V7 MultiLine NoSorting TabWidth=30
+
+H="Decipher Wiki"
+^!URL http://support.decipherinc.com
+
+H="Client Requirements"
+^!IfFalse ^$IsEmpty(^%p_ValueList%)$ Skip
+
+^!Set %p_ValueList%=General requirements|CMB Requirements|eBay Requirements|FMA Requirements|GDI Requirements|GMI Requirements|HAP Requirements|SRG Requirements
+^!Set %p_ValueList%=^$SetDefaultValue(^%p_ValueList%;^%p_ReqValue%)$
+
+:StartAgain
+^!Set %p_ReqValue%=^?{(T=A)Choose the requirements set to use=^%p_ValueList%}
+^!Set %CheckValue%="
+^!Append %CheckValue%=^%p_ReqValue%
+^!Append %CheckValue%="
+^!SetArray %CheckArray%=^%CheckValue%
+^!If ^%CheckArray2% <> "" ShowError1 ELSE CheckNoChoice
+
+:ShowError1
+^!Prompt Please select only one choice
+^!GoTo StartAgain
+
+:ShowError2
+^!Prompt Please select at least one choice
+^!GoTo StartAgain
+
+:CheckNoChoice
+;if the first element of the array is empty, then no choices were selected
+^!If ^%CheckArray1%="" ShowError2 ELSE ShowChoice
+
+:ShowChoice
+^!StatusShow Currently using ^%p_ReqValue%
+^!Delay 12
+;set default to no default selected
+^!Set %p_ValueList%=^$SetDefaultValue(^%p_ValueList%;^%p_ReqValue%)$
+^!GoTo End
+
+H=";"
+
+
+H=";MISC"
+
+
+H="New Survey"
+^!RunScript C:\python26\python.exe cleanUp
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE ^!If ^%p_ReqValue% = "CMB Requirements" CMB ELSE ContinueCheck
+
+:ContinueCheck
+^!If ^%p_ReqValue% = "GDI Requirements" GDI ELSE ^!If ^%p_ReqValue% = "SRG Requirements" SRG ELSE ContinueCheck2
+
+:ContinueCheck2
+^!If ^%p_ReqValue% = "GMI Requirements" GMI ELSE ^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe newSurvey
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe newSurveyFMA
+^!GoTo End
+
+:CMB
+^!RunScript C:\python26\python.exe newSurveyCMB
+^!GoTo End
+
+:GDI
+^!RunScript C:\python26\python.exe newSurveyGDI
+^!GoTo End
+
+:SRG
+^!RunScript C:\python26\python.exe newSurveySRG
+^!GoTo End
+
+:GMI
+^!RunScript C:\python26\python.exe newSurveyGMI
+^!GoTo End
+
+:eBay
+^!RunScript C:\python26\python.exe newSurveyEBAY
+^!GoTo End
+
+H="Make Survey Comment"
+^!RunScript C:\python26\python.exe addComment
+
+H="Make Report Comment"
+^!RunScript C:\python26\python.exe addReportComment
+
+H="Make Question Comment"
+^!RunScript C:\python26\python.exe addCommentQuestion
+
+H="Make <html final="1">"
+^!RunScript C:\python26\python.exe htmlFinal
+
+H=";"
+
+
+H=";QUESTION TYPES"
+
+
+H="Make Radio"
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE ^!If ^%p_ReqValue% = "CMB Requirements" CMB ELSE ContinueCheck
+
+:ContinueCheck
+^!If ^%p_ReqValue% = "HAP Requirements" HAP ELSE ^!If ^%p_ReqValue% = "SRG Requirements" SRG ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe makeRadio
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe makeRadioFMA
+^!GoTo End
+
+:CMB
+^!RunScript C:\python26\python.exe makeRadioCMB
+^!GoTo End
+
+:HAP
+^!RunScript C:\python26\python.exe makeRadioHAP
+^!GoTo End
+
+:SRG
+^!RunScript C:\python26\python.exe makeRadioSRG
+^!GoTo End
+
+H="Make Checkbox"
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE ^!If ^%p_ReqValue% = "CMB Requirements" CMB ELSE ContinueCheck
+
+:ContinueCheck
+^!If ^%p_ReqValue% = "HAP Requirements" HAP ELSE ^!If ^%p_ReqValue% = "SRG Requirements" SRG ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe makeCheckbox
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe makeCheckboxFMA
+^!GoTo End
+
+:CMB
+^!RunScript C:\python26\python.exe makeCheckboxCMB
+^!GoTo End
+
+:HAP
+^!RunScript C:\python26\python.exe makeCheckboxHAP
+^!GoTo End
+
+:SRG
+^!RunScript C:\python26\python.exe makeCheckboxSRG
+^!GoTo End
+
+H="Make Rating"
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE ^!If ^%p_ReqValue% = "CMB Requirements" CMB ELSE ContinueCheck
+
+:ContinueCheck
+^!If ^%p_ReqValue% = "HAP Requirements" HAP ELSE ^!If ^%p_ReqValue% = "SRG Requirements" SRG ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe makeRating
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe makeRatingFMA
+^!GoTo End
+
+:CMB
+^!RunScript C:\python26\python.exe makeRatingCMB
+^!GoTo End
+
+:HAP
+^!RunScript C:\python26\python.exe makeRatingHAP
+^!GoTo End
+
+:SRG
+^!RunScript C:\python26\python.exe makeRatingSRG
+^!GoTo End
+
+H="Make Select"
+^!RunScript C:\python26\python.exe makeSelect
+^!GoTo End
+
+H="Make Text"
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE ^!If ^%p_ReqValue% = "CMB Requirements" CMB ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe makeText
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe makeTextFMA
+^!GoTo End
+
+:CMB
+^!RunScript C:\python26\python.exe makeTextCMB
+^!GoTo End
+
+H="Make Textarea"
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe makeTextarea
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe makeTextareaFMA
+^!GoTo End
+
+H="Make Number"
+^!If ^%p_ReqValue% = "FMA Requirements" FMA ELSE Generic
+
+:Generic
+^!RunScript C:\python26\python.exe makeNumber
+^!GoTo End
+
+:FMA
+^!RunScript C:\python26\python.exe makeNumberFMA
+^!GoTo End
+
+H="Make Pipe"
+^!RunScript C:\python26\python.exe makePipe
+^!GoTo End
+
+H=";"
+
+
+H=";QUESTION ELEMENTS"
+
+
+H="Make Rows"
+^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:eBay
+^!RunScript C:\python26\python.exe makeRowsEBAY
+^!GoTo End
+
+:Generic
+^!RunScript C:\python26\python.exe makeRows
+^!GoTo End
+
+H="Make Rows Match Label"
+^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:eBay
+^!RunScript C:\python26\python.exe makeRowsMatchLabelEBAY
+^!GoTo End
+
+:Generic
+^!RunScript C:\python26\python.exe makeRowsMatchLabel
+^!GoTo End
+
+H="Make Rows Match Values"
+^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:eBay
+^!RunScript C:\python26\python.exe makeRowsValuesEBAY
+^!GoTo End
+
+:Generic
+^!RunScript C:\python26\python.exe makeRowsValues
+^!GoTo End
+
+H="Make Rows (Rating L-H)"
+^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:eBay
+^!RunScript C:\python26\python.exe makeRowsLowEBAY
+^!GoTo End
+
+:Generic
+^!RunScript C:\python26\python.exe makeRowsLow
+^!GoTo End
+
+H="Make Rows (Rating H-L)"
+^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:eBay
+^!RunScript C:\python26\python.exe makeRowsHighEBAY
+^!GoTo End
+
+:Generic
+^!RunScript C:\python26\python.exe makeRowsHigh
+^!GoTo End
+
+H="Make Columns"
+^!RunScript C:\python26\python.exe makeCols
+^!GoTo End
+
+H="Make Columns Match Label"
+^!RunScript C:\python26\python.exe makeColsMatchLabel
+^!GoTo End
+
+H="Make Columns Match values"
+^!RunScript C:\python26\python.exe makeColsValues
+^!GoTo End
+
+
+H="Make Columns (Rating L-H)"
+^!RunScript C:\python26\python.exe makeColsLow
+
+H="Make Columns (Rating H-L)"
+^!RunScript C:\python26\python.exe makeColsHigh
+
+H="Make NoAnswer"
+^!RunScript C:\python26\python.exe makeNoAnswer
+^!GoTo End
+
+H="Make No Answer Match Label"
+^!RunScript C:\python26\python.exe makeNAMatchLabel
+^!GoTo End
+
+H="Make Choices"
+^!RunScript C:\python26\python.exe makeChoices
+^!GoTo End
+
+H="Make Choices Match values"
+^!RunScript C:\python26\python.exe makeChoicesValues
+^!GoTo End
+
+
+H="Make Choices (Rating L-H)"
+^!RunScript C:\python26\python.exe makeChoicesLow
+
+H="Make Choices (Rating H-L)"
+^!RunScript C:\python26\python.exe makeChoicesHigh
+
+H="Make Case"
+^!RunScript C:\python26\python.exe makeCase
+^!GoTo End
+
+H="Make Resource Tag"
+^!RunScript C:\python26\python.exe makeRes
+^!GoTo End
+
+H="Make Condition"
+^!InsertText <condition label="" cond="">^&</condition>
+
+H="Make Marker"
+^!InsertText <marker name="^&" cond=""/>
+
+H="Make Term"
+^!InsertText <term cond="">^&</term>
+
+H="Make Groups"
+^!RunScript C:\python26\python.exe makeGroups
+
+H=" "
+
+
+H="; TEXT FORMATTING"
+
+
+H="Bold Underline"
+^!If "^$GetChar(^$Calc(^$GetColEnd$-1)$)$" = " " hasTrailingSpace ELSE hasNoTrailingSpace
+
+:hasTrailingSpace
+^!InsertText <b><u>^$StrDeleteRight(^&;1)$</u></b> 
+^!Goto END
+
+:hasNoTrailingSpace
+^!InsertText <b><u>^&</u></b>
+^!Goto END
+
+H="<b></b>"
+^!If "^$GetChar(^$Calc(^$GetColEnd$-1)$)$" = " " hasTrailingSpace ELSE hasNoTrailingSpace
+
+:hasTrailingSpace
+^!InsertText <b>^$StrDeleteRight(^&;1)$</b> 
+^!Goto END
+
+:hasNoTrailingSpace
+^!InsertText <b>^&</b>
+^!Goto END
+
+H="<u></u>"
+^!If "^$GetChar(^$Calc(^$GetColEnd$-1)$)$" = " " hasTrailingSpace ELSE hasNoTrailingSpace
+
+:hasTrailingSpace
+^!InsertText <u>^$StrDeleteRight(^&;1)$</u> 
+^!Goto END
+
+:hasNoTrailingSpace
+^!InsertText <u>^&</u>
+^!Goto END
+
+H="<i></i>"
+^!If "^$GetChar(^$Calc(^$GetColEnd$-1)$)$" = " " hasTrailingSpace ELSE hasNoTrailingSpace
+
+:hasTrailingSpace
+^!InsertText <i>^$StrDeleteRight(^&;1)$</i> 
+^!Goto END
+
+:hasNoTrailingSpace
+^!InsertText <i>^&</i>
+^!Goto END
+
+H="<li></li>"
+^!InsertText <li>^&</li>
+
+H="Make li per line"
+^!RunScript C:\python26\python.exe makeLi
+^!GoTo End
+
+H="<br/><br/>"
+^!InsertText <br/><br/>
+
+H="<!-- -->"
+^!InsertText <!--^&-->
+
+H=" "
+
+
+H="; ATTRIBUTES"
+
+
+H="Add Open-End"
+^!If ^%p_ReqValue% = "eBay Requirements" eBay ELSE Generic
+
+:eBay
+^!InsertText  open="1" openSize="45" randomize="0"
+^!GoTo End
+
+:Generic
+^!InsertText  open="1" openSize="25" randomize="0"
+^!GoTo End
+
+H="Add Randomize="0""
+^!InsertText  randomize="0"
+
+H="Add Exclusive"
+^!InsertText  exclusive="1" randomize="0"
+
+H="Add Aggregate"
+^!InsertText  aggregate="0" percentages="0"
+
+H="Add Optional"
+^!InsertText  optional="1"
+
+H="Add Groups"
+^!RunScript C:\python26\python.exe addGroups
+
+H="Add onLoad Copy Rows"
+^!InsertText  onLoad="copy('Q#', rows=True)"
+
+H="Add Values"
+^!RunScript C:\python26\python.exe addValues
+
+H="Add Values (L-H)"
+^!RunScript C:\python26\python.exe addValuesLow
+
+H="Add Values (H-L)"
+^!RunScript C:\python26\python.exe addValuesHigh
+
+H="Add Shuffle Rows"
+^!InsertText  shuffle="rows"
+
+H="Add MLS"
+^!RunScript C:\python26\python.exe addMLS
+
+H="Add Alts"
+^!RunScript C:\python26\python.exe addAlts
+
+H="Add Values and Groups"
+^!RunScript C:\python26\python.exe addValuesGroups
+
+H="Add where="execute""
+^!InsertText  where="execute"
+
+H="Add Grouping/Adim Rows"
+^!InsertText  grouping="rows" adim="rows"
+
+H="Add MinRanks"
+^!InsertText  minRanks="^&"
+
+H="Make Nets Labels"
+^!RunScript C:\python26\python.exe makeNetsLabels
+
+H="Make Nets Values"
+^!RunScript C:\python26\python.exe makeNetsValues
+
+H="Make Nets Indices"
+^!RunScript C:\python26\python.exe makeNetsIndices
+
+H="Add Mobile Compat + Devices"
+^!InsertText  mobile="compat" mobileDevices="smartphone,tablet,featurephone,mobile"
+
+H=" "
+
+
+H="; CONTROL ELEMENTS"
+
+
+H="IF Tag (randomize)"
+^!RunScript C:\python26\python.exe addIfStatementRandomize
+
+H="IF Tag"
+^!RunScript C:\python26\python.exe addIfStatement
+
+H="Random Tag"
+^!RunScript C:\python26\python.exe addRandomStatement
+
+H="Block Tag"
+^!RunScript C:\python26\python.exe addBlockStatement
+
+H="Block Tag (randomizeChildren)"
+^!RunScript C:\python26\python.exe addBlockChildrenStatement
+
+H="Add Quota"
+^!InsertText <quota sheet="^&"/>
+
+H="add createQuotaTables"
+^!InsertText 
+<label onLoad="createQuotaTables()"/>
+
+H="Generic Database Lockdown"
+^!InsertText 
+
+<exec when="init">db = Database("invited.txt")</exec>
+<exec when="finished">if hasMarker('lockme'):  db.add(source)</exec>
+<marker name="lockme" cond=""/>
+
+<html final="1" cond="hasMarker('lockme') and not db.valid(source)" label="error_invalid_source" where="survey">
+<div class='important'>${hlang.get("invited.not")}</div>
+</html>
+
+<html final="1" cond="hasMarker('lockme') and db.inuse(source)" label="error_inuse_source" where="survey">
+<div class='important'>${hlang.get("invited.inprogress")}</div>
+</html>
+
+<html final="1" cond="hasMarker('lockme') and db.has(source)" label="error_completed_source" where="survey">
+<div class='important'>${hlang.get("invited.used")}</div>
+</html>
+
+H="Loop Tag"
+^!RunScript C:\python26\python.exe addLoopBlock
+
+H=" "
+
+
+H=";OTHER MISC"
+
+
+H="Make Link (href)"
+^!RunScript C:\python26\python.exe makeHref
+
+H="Clean up formatting"
+^!RunScript C:\python26\python.exe cleanUp
+
+H="Relabel Elements"
+^!RunScript C:\python26\python.exe relabel
+
+H="Swap Rows and Cols"
+^!RunScript C:\python26\python.exe swapRowCol
+
+H="Add vStatus Virtual"
+^!InsertText 
+<radio label="vStatus" title="Status">
+<virtual>
+if 'recovered' in markers:
+    data[0][0] = 3
+else:
+    if 'qualified' in markers:
+        data[0][0] = 2
+    elif 'OQ' in markers:
+        data[0][0] = 1
+    else:
+        data[0][0] = 0
+</virtual>
+  <row label="r1">Term</row>
+  <row label="r2">OQ</row>
+  <row label="r3">Quals</row>
+  <row label="r4">Partials</row>
+</radio>
+
+
+H="Add vChange"
+^!InsertText 
+<exec>
+setMarker('vChange')
+</exec>
+
+<radio label="vChange" title="Pre vs Post Change">
+<virtual>
+if 'vChange' in markers:
+  data[0][0] = 1
+else:
+  data[0][0] = 0
+</virtual>
+  <row label="r1">Before Change made</row>
+  <row label="r2">After Change made</row>
+</radio>
+
+
+H="Shuffle Rows Virtual"
+^!InsertText 
+<number label="Q_order" size="2" title="Q order" onLoad="copy('Q', rows=True)">
+<virtual>
+assignRandomOrder("Q", "rows")
+</virtual>
+</number>
+
+H="Random Order Virtual Tracker"
+^!InsertText 
+<number label="block_order" size="2" title="block Order">
+<virtual>assignRandomOrder("block", "children")</virtual>
+<row label="r1">Concept 1</row>
+<row label="r2">Concept 2</row>
+<row label="r3">Concept 3</row>
+</number>
+
+H="DCM Template"
+^!InsertText 
+<exec when="init">
+import csv
+class DCM:
+    def __init__(self, fname, delim="\t"):
+        csvObj = csv.reader(open("%s/%s" % (gv.survey.path,fname)), delimiter=delim)
+
+        dcm_concepts = []
+        d = {}
+
+        for i,row in enumerate(csvObj):
+            if i:
+                d["v%s_t%s_c%s" % (row[0],row[1],row[2])] = row[3:]
+                if row[2] not in dcm_concepts:
+                    dcm_concepts.append(row[2])
+
+        self.concepts = sorted([ int(x) for x in dcm_concepts ])
+        self.d = d
+
+    #set persistent items, format: p.concept#_att#
+    def setItems(self, _vt, prefix="1"):
+        print "***** STAFF ONLY *****"
+        print "***** DCM Matrix *****"
+        print "Version_Task: %s" % _vt
+
+        for concept in self.concepts:
+            attributes = self.d[ "%s_c%s" % (_vt,concept) ]
+            print "Concept %s: %s" % (concept,attributes)
+
+            for i,attr in enumerate(attributes):
+                p[ "concept%s_att%s" % (concept,i+1) ] = res[ "dcm%s_Att%s_level%s" % (prefix,i+1,attr) ]
+                p[ "dcmLegend_att%s" % (i+1) ] = res[ "dcm%s_legend%s" % (prefix,i+1) ]
+
+dcm1 = DCM("design.txt")
+</exec>
+
+
+<quota sheet="DCM"/>
+
+<exec>
+for x in p.markers:
+  if '/DCM/ver_' in x:
+    DCM_Version.val = int(x.split("_")[-1])
+    break
+</exec>
+
+<number label="DCM_Version" size="3" optional="1" title="DCM Version" style="dev" cond="not gv.isSST()"/>
+<suspend/>
+
+<res label="dcm1_legend1">Legend 1</res>
+<res label="dcm1_legend2">Legend 2</res>
+<res label="dcm1_legend3">Legend 3</res>
+<res label="dcm1_legend4">Legend 4</res>
+<res label="dcm1_legend5">Legend 5</res>
+
+<res label="dcm1_Att1_level1">att1-1</res>
+<res label="dcm1_Att1_level2">att1-2</res>
+<res label="dcm1_Att1_level3">att1-3</res>
+<res label="dcm1_Att1_level4">att1-4</res>
+
+<res label="dcm1_Att2_level1">att2-1</res>
+<res label="dcm1_Att2_level2">att2-2</res>
+<res label="dcm1_Att2_level3">att2-3</res>
+
+<res label="dcm1_Att3_level1">att3-1</res>
+<res label="dcm1_Att3_level2">att3-2</res>
+<res label="dcm1_Att3_level3">att3-3</res>
+
+<res label="dcm1_Att4_level1">att4-1</res>
+<res label="dcm1_Att4_level2">att4-2</res>
+<res label="dcm1_Att4_level3">att4-3</res>
+
+<res label="dcm1_Att5_level1">att5-1</res>
+<res label="dcm1_Att5_level2">att5-2</res>
+<res label="dcm1_Att5_level3">att5-3</res>
+
+@define dcmquestion task=XX
+<block label="child_$(task)" randomize="1">
+<radio label="Q1_$(task)" optional="0" style="dcm"
+ ss:questionClassNames="dcm"
+ dcm:attributes="5"
+ dcm:legend="1"
+ dcm:top="Concepts"
+ dcm:row="Select one option">
+  <title>DCM Title [DCMcount]</title>
+  <alt>DCM Task: $(task)</alt>
+  <comment>Select one</comment>
+<exec>
+dcm1.setItems( 'v%s_t%s' % (DCM_Version.val,'$(task)') )
+p.DCMcount = str(dcm_rand.order.index($(task)-1)+1)
+</exec>
+  <col label="c1">Concept 1</col>
+  <col label="c2">Concept 2</col>
+  <col label="c3">Concept 3</col>
+  <col label="c4">Concept 4</col>
+</radio>
+<suspend/>
+</block>
+@end
+
+<exec>p.startTime = time.time()</exec>
+
+<block label="dcm_rand" randomizeChildren="0">
+@dcmquestion task=1
+@dcmquestion task=2
+@dcmquestion task=3
+@dcmquestion task=4
+@dcmquestion task=5
+</block>
+
+<exec>dcm_timer.val = (time.time() - p.startTime) / 60.0</exec>
+
+<float label="dcm_timer" size="15" style="dev" cond="not gv.isSST()" title="DCM - Timer in Minutes"/>
+
+H=" "
+
+
+H=";STYLES ATTRIBUTES"
+
+
+H="Add Col Class"
+^!InsertText  ss:colClassNames=""
+
+H="Add Row Class"
+^!InsertText  ss:rowClassNames=""
+
+H="Add Choice Class"
+^!InsertText  ss:choiceClassNames=""
+
+H="Add Group Class"
+^!InsertText  ss:groupClassNames=""
+
+H="Add Comment Class"
+^!InsertText  ss:commentClassNames=""
+
+H="Add Question Comment Class"
+^!InsertText  ss:questionClassNames=""
+
+H="Add colWidth (set col width)"
+^!InsertText  ss:colWidth=""
+
+H="Add legendColWidth (set left/right legend)"
+^!InsertText  ss:legendColWidth=""
+
+H="Add ATM Style"
+^!InsertText  uses="atmtable"
+
+H="Add ATM 1D Style"
+^!InsertText  uses="atm1d"
+
+H="Add Autosum style"
+^!InsertText  uses="autosum"
+
+H="Add Cardsort Style"
+^!InsertText   cardsort:bucketCSS="" cardsort:bucketsPerRow="" cardsort:cardCSS="" cardsort:completionCSS="" cardsort:displayCounter="0" cardsort:displayNavigation="0" uses="cardsort"
+
+H="Add Fancyboxes"
+^!InsertText  uses="fancyboxes"
+
+H="Add (FIR) Image Replacement Style"
+^!InsertText  uses="fir"
+
+H="Add Left Right style (This or That)"
+^!InsertText  uses="leftright"
+
+H="Add Multicol style"
+^!InsertText uses="multicol" multicol:flow=""
+
+H="Add Rating Scale style"
+^!InsertText  uses="ratingscale"
+
+H="Add Rank Sort style"
+^!InsertText  uses="ratingscale"
+
+H="Add Starrating style"
+^!InsertText  uses="starrating"
+
+H="Add Separator Style"
+^!InsertText  uses="separator" separator:elements="" 
+
+H="Add Slider style"
+^!InsertText  uses="slider"
+
+H="Add Tooltips Style"
+^!InsertText  uses="tooltips"
+
+H="Add One row at a time style"
+^!InsertText  uses="onerowatatime"
+
+H=";"
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=" "
+
+
+H=";"
+
+
+H=" "
+
+
+H=" "
+
+
+H="   "
+
+
+H=" "
+
+
+H=" "
+
+
+H=";Python Scripts"
+
+
+H="newSurvey"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="Survey" alt="" autosave="0" extraVariables="source,list,url,record,ipAddress,userAgent,decLang" compat="114" builderCompatible="1" secure="0" state="testing" setup="time,term,quota,decLang" ss:disableBackButton="1" unique="">
+
+<samplesources default="0">
+  <samplesource list="0" title="default">
+    <exit cond="qualified"><b>Thanks again for completing the survey!<br/><br/>Your feedback and quick response to this survey are greatly appreciated.</b></exit>
+    <exit cond="terminated"><b>Thank you for your input!</b></exit>
+    <exit cond="overquota"><b>Thank you for your input!</b></exit>
+  </samplesource>
+</samplesources>"""
+    
+    FOOTER = """<marker name="qualified"/>
+
+</survey>"""
+    
+    print "%s\n\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="newSurveyCMB"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="Survey" alt="" autosave="1" extraVariables="source,list,url,record,ipAddress,userAgent,decLang" compat="114" builderCompatible="1" secure="0" state="testing" setup="time,term,quota,decLang" ss:disableBackButton="1" trackCheckbox="1" unique="">
+
+<!-- IMPORTANT: Remember to copy the nstyles file from v2/cmb/temp-cmb to the current project directory -->
+
+<samplesources default="0">
+  <samplesource list="0" title="default">
+    <exit cond="qualified"><b>Thanks again for completing the survey!<br/><br/>Your feedback and quick response to this survey are greatly appreciated.</b></exit>
+    <exit cond="terminated"><b>Thank you for your input!</b></exit>
+    <exit cond="overquota"><b>Thank you for your input!</b></exit>
+  </samplesource>
+</samplesources>"""
+    
+    FOOTER = """<marker name="qualified"/>
+
+</survey>"""
+    
+    print "%s\n\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="newSurveyEBAY"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="eBay Survey" alt="" autosave="1" extraVariables="source,list,url,record,ipAddress,userAgent,co,decLang" compat="114" builderCompatible="1" secure="0" state="testing" setup="time,term,quota,decLang" ss:disableBackButton="1" displayOnError="all" unique="" lang="english" otherLanguages="danish,german,finnish,french,norwegian,spanish,swedish,uk">
+
+<res label="privacyText">Privacy Policy</res>
+<res label="helpText">Help</res>
+
+<!-- Remove or add countries as needed -->
+<languages default="english">
+  <language name="danish" var="co" value="dk"/>
+  <language name="german" var="co" value="de"/>
+  <language name="finnish" var="co" value="fi"/>
+  <language name="french" var="co" value="fr"/>
+  <language name="norwegian" var="co" value="no"/>
+  <language name="spanish" var="co" value="es"/>
+  <language name="swedish" var="co" value="se"/>
+  <language name="uk" var="co" value="uk"/>
+  <language name="english" var="co" value="us"/>
+</languages>
+
+<!-- Remove or add countries as needed -->
+<radio label="vco" title="Country" virtual="bucketize(co)">
+  <row label="dk">Denmark</row>
+  <row label="de">Germany</row>
+  <row label="fi">Finland</row>
+  <row label="fr">France</row>
+  <row label="no">Norway</row>
+  <row label="es">Spain</row>
+  <row label="se">Sweden</row>
+  <row label="uk">United Kingdom</row>
+  <row label="us">United Sates</row>
+</radio>
+
+<!-- Remove or add countries as needed -->
+<samplesources default="1">
+  <samplesource list="1" title="eBay Sample">
+ <!--  <var name="source" filename="invited.txt" unique="1"/>  un-comment this before launching -->
+   <var name="co" required="1" values="dk,de,fi,fr,no,es,se,uk,us"/>
+    <exit cond="qualified and co=='dk'" timeout="8" url="http://www.ebay.dk">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='dk'" timeout="8" url="http://www.ebay.dk">Thank you for your input!</exit>
+    <exit cond="overquota and co=='dk'" timeout="8" url="http://www.ebay.dk">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='de'" timeout="8" url="http://www.ebay.de">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='de'" timeout="8" url="http://www.ebay.de">Thank you for your input!</exit>
+    <exit cond="overquota and co=='de'" timeout="8" url="http://www.ebay.de">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='fi'" timeout="8" url="http://www.ebay.fi">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='fi'" timeout="8" url="http://www.ebay.fi">Thank you for your input!</exit>
+    <exit cond="overquota and co=='fi'" timeout="8" url="http://www.ebay.fi">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='fr'" timeout="8" url="http://www.ebay.fr">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='fr'" timeout="8" url="http://www.ebay.fr">Thank you for your input!</exit>
+    <exit cond="overquota and co=='fr'" timeout="8" url="http://www.ebay.fr">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='no'" timeout="8" url="http://www.ebay.no">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='no'" timeout="8" url="http://www.ebay.no">Thank you for your input!</exit>
+    <exit cond="overquota and co=='no'" timeout="8" url="http://www.ebay.no">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='es'" timeout="8" url="http://www.ebay.es">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='es'" timeout="8" url="http://www.ebay.es">Thank you for your input!</exit>
+    <exit cond="overquota and co=='es'" timeout="8" url="http://www.ebay.es">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='se'" timeout="8" url="http://www.ebay.se">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='se'" timeout="8" url="http://www.ebay.se">Thank you for your input!</exit>
+    <exit cond="overquota and co=='se'" timeout="8" url="http://www.ebay.se">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='uk'" timeout="8" url="http://www.ebay.co.uk">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='uk'" timeout="8" url="http://www.ebay.co.uk">Thank you for your input!</exit>
+    <exit cond="overquota and co=='uk'" timeout="8" url="http://www.ebay.co.uk">Thank you for your input!</exit>
+
+    <exit cond="qualified and co=='us'" timeout="8" url="http://www.ebay.com">Survey Completed - Thank you for your time and opinions!</exit>
+    <exit cond="terminated and co=='us'" timeout="8" url="http://www.ebay.com">Thank you for your input!</exit>
+    <exit cond="overquota and co=='us'" timeout="8" url="http://www.ebay.com">Thank you for your input!</exit>
+  </samplesource>
+</samplesources>
+
+
+<html label="StandardIntro" where="survey">Thank you for taking the time to complete this survey. Your opinions are extremely valuable, and will help us to improve your eBay experience. Your responses are completely confidential and will only be used for research purposes. Your responses will be analyzed only in combination with those of other participants. See our <a href="http://pages.ebay.com/help/policies/privacy-policy.html" target="_blank">privacy policy</a>.</html>
+<suspend/>
+
+"""
+
+
+    FOOTER = """<marker name="qualified"/>
+
+</survey>"""
+    
+    print "%s\n\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="newSurveyFMA"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="Survey" alt="" autosave="0" extraVariables="source,list,url,record,ipAddress,userAgent,decLang" compat="114" builderCompatible="1" secure="0" state="testing" setup="time,term,quota,decLang" ss:disableBackButton="1" fwoe="text" ss:logoFile="fma/surveysonline_logo.gif" ss:logoPosition="left">
+
+<samplesources default="0">
+  <samplesource list="0" title="default">
+    <exit cond="qualified"><b>Thanks again for completing the survey!<br/><br/>Your feedback and quick response to this survey are greatly appreciated.</b></exit>
+    <exit cond="terminated"><b>Thank you for your input!</b></exit>
+    <exit cond="overquota"><b>Thank you for your input!</b></exit>
+  </samplesource>
+</samplesources>"""
+    
+    FOOTER = """<marker name="qualified"/>
+
+<radio label="vStatus" title="Status">
+<virtual>
+if 'recovered' in markers:
+    data[0][0] = 3
+else:
+    if 'qualified' in markers:
+        data[0][0] = 2
+    elif 'OQ' in markers:
+        data[0][0] = 1
+    else:
+        data[0][0] = 0
+</virtual>
+  <row label="r1">Term</row>
+  <row label="r2">OQ</row>
+  <row label="r3">Quals</row>
+  <row label="r4">Partials</row>
+</radio>
+
+</survey>"""
+    
+    print "%s\n\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="newSurveyGDI"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="Survey" alt="" autosave="0" extraVariables="source,list,url,record,ipAddress,userAgent,decLang" compat="114" builderCompatible="1" secure="0" state="testing" setup="time,term,quota,decLang" ss:disableBackButton="1" fixedWidth="tight" zeroPad="1">
+
+<samplesources default="1">
+  <samplesource list="1" title="Greenfield/Toluna">
+    <var name="gid" unique="1"/>
+    <exit cond="qualified" url="http://ups.surveyrouter.com/soqualified.aspx?gid=${gid}"/>
+    <exit cond="terminated" url="http://ups.surveyrouter.com/soterminated.aspx?gid=${gid}"/>
+    <exit cond="overquota" url="http://ups.surveyrouter.com/soquotafull.aspx?gid=${gid}"/>
+  </samplesource>
+</samplesources>
+
+<number altlabel="record" fwidth="10" label="vrec" size="10" title="Record As Number" virtual="if record:  data[0][0] = int(record)"/>
+"""
+    
+    FOOTER = """<marker name="qualified"/>
+
+</survey>"""
+    
+    print "%s\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="newSurveySRG"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="Survey" alt="" autosave="0" extraVariables="source,list,url,record,ipAddress,userAgent,flashDetected,decLang" compat="114" builderCompatible="1" secure="0" state="testing" setup="time,term,quota,decLang" ss:disableBackButton="1" ss:colorScheme="theme_red-01" fixedWidth="tight">
+
+<samplesources default="0">
+  <samplesource list="0" title="default">
+    <exit cond="qualified"><b>Thanks again for completing the survey!<br/><br/>Your feedback and quick response to this survey are greatly appreciated.</b></exit>
+    <exit cond="terminated"><b>Thank you for your input!</b></exit>
+    <exit cond="overquota"><b>Thank you for your input!</b></exit>
+  </samplesource>
+</samplesources>"""
+    
+    FOOTER = """<marker name="qualified"/>
+
+</survey>"""
+    
+    print "%s\n\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="newSurveyGMI"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    input = re.sub("\t+", " ", input)
+    input = re.sub("\n +\n", "\n\n", input)
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+    input = re.sub("\n{3,}", "\n\n", input)
+    input = input.replace("&", "&amp;")
+    input = input.replace("&amp;#", "&#")
+    
+    HEADER = """<?xml version="1.0" encoding="UTF-8"?>
+<survey name="Survey" alt="" autosave="1" autosaveKey="ac" extraVariables="source,list,url,record,ipAddress,userAgent,flashDetected,ac,sn,lang,co,decLang" setup="time,term,quota,decLang" ss:disableBackButton="1" displayOnError="all" unique="" compat="114" builderCompatible="1" secure="0" state="testing">
+
+<exec when="init">
+db_completed = Database( name="completed" )
+</exec>
+<exec>
+db_id = ac
+p.completedID = db_id
+</exec>
+
+<samplesources default="1">
+  <completed>It seems you have already entered this survey.</completed>
+  <invalid>You are missing information in the URL. Please verify the URL with the original invite.</invalid>
+  <samplesource list="1" title="GMI">
+    <var name="ac" unique="1"/>
+    <var name="sn" required="1"/>
+    <var name="lang" required="1"/>
+    <exit cond="qualified" url="http://globaltestmarket.com/20/survey/finished.phtml?ac=${ac}&amp;sn=${sn}&amp;lang=${lang}"/>
+    <exit cond="terminated" url="http://globaltestmarket.com/20/survey/finished.phtml?ac=${ac}&amp;sn=${sn}&amp;lang=${lang}&amp;sco=s"/>
+    <exit cond="overquota" url="http://globaltestmarket.com/20/survey/finished.phtml?ac=${ac}&amp;sn=${sn}&amp;lang=${lang}&amp;sco=o"/>
+  </samplesource>
+<samplesources>
+
+<html cond="db_completed.has(p.completedID)" final="1" label="dupe" where="survey">It seems you have already participated in this survey.</html>
+"""
+    
+    FOOTER = """<marker name="qualified"/>
+
+<exec when="finished">
+if gv.survey and gv.survey.root.state.live:
+    db_completed.add(p.completedID)
+</exec>
+
+</survey>"""
+    
+    print "%s\n\n%s\n\n%s" % (HEADER, input, FOOTER)
+    
+except Exception, e:
+    print e
+
+H="addIfStatementRandomize"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<if label=\"\" cond=\"1\" randomize=\"1\">\n%s\n</if>" % input
+    
+except Exception, e:
+    print e
+
+H="addIfStatement"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<if label=\"\" cond=\"\">\n%s\n<suspend/>\n</if>" % input
+    
+    
+except Exception, e:
+    print e
+
+H="addBlockStatement"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<block label=\"\" cond=\"1\" randomize=\"1\">\n%s\n</block>" % input
+    
+except Exception, e:
+    print e
+
+H="addRandomStatement"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<random label=\"\">\n%s\n</random>" % input
+    
+except Exception, e:
+    print e
+
+H="addBlockChildrenStatement"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<block label=\"\" cond=\"1\" randomizeChildren=\"1\">\n%s\n</block>" % input
+    
+except Exception, e:
+    print e
+
+H="addComment"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    input = input.replace("\n", "<br/>\n")
+    print "<html label=\"\" where=\"survey\">%s</html>" % input
+
+except Exception, e:
+    print e
+
+H="addReportComment"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    input = input.replace("\n", "<br/>")
+    print "<comment label=\"\" where=\"report\">%s</comment>" % input
+
+except Exception, e:
+    print e
+
+H="addCommentQuestion"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "  <comment>%s</comment>" % input
+    
+except Exception, e:
+    print e
+
+H="htmlFinal"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<html label=\"\" cond=\"\" where=\"survey\" final=\"1\"><div class=\"error\">%s</div></html>" % input
+except Exception, e:
+    print e
+
+
+H="makeHref"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<a href=\"%s\" target=\"_blank\">%s</a>" % (input,input)
+except Exception, e:
+    print e
+
+H="addHiddenComment"
+try:
+    from sys import stdin
+    input = stdin.read().strip()
+    print "<comment where=\"none\">%s</comment>" % input
+except Exception, e:
+    print e
+    
+
+H="cleanUp"
+
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+
+    #CLEAN UP SPACES 
+    input = re.sub("\n +\n", "\n\n", input)
+
+    #REPLACE SMART QUOTES, ELLIPSIS AND EM-DASHES
+    funkyChars = [(chr(133),'...'),(chr(145),"'"),(chr(146),"'"),(chr(147),'"'),(chr(148),'"'),(chr(151),'--')]
+
+    for pair in funkyChars:
+        input = input.replace(pair[0],pair[1])
+
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{3,}", "\n\n", input)
+
+    #REPLACE AMPERSTANDS WITH ENTITIES
+    input = input.replace("&", "&amp;")
+
+    print input
+
+except Exception, e:
+    print e
+
+H="addAlts"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    input = re.sub("(<(row|col|choice|group).*?>)(.*?)(</(row|col|choice|group)>)", "\g<1><alt>\g<3></alt>\g<3>\g<4>", input)
+    title = re.compile("(<title>)(.*?)(</title>)", re.DOTALL)
+    input = title.sub("\g<1>\g<2>\g<3>\n<alt>\g<2></alt>", input)
+    print input
+    
+except Exception, e:
+    print e
+
+H="addMLS"
+try:
+    from sys import stdin
+    input = stdin.read().split("\n")
+    while "" in input:
+        del input[input.index("")]
+    for x in input:
+        if "alt=" in x:
+            x = x.replace(" alt=\"", " mls=\"\" alt=\"")
+        else:
+            x = x.replace("\">", "\" mls=\"\">")
+        print x
+except Exception, e:
+    print e
+
+
+H="addValuesGroups"
+try:
+    from sys import stdin
+    input = stdin.read().split("\n")
+    while "" in input:
+        del input[input.index("")]
+    for x in input:
+        if "alt=\"" in x:
+            x = x.replace(" alt=\"", " value=\"\" groups=\"g\"" + " alt=\"")
+        else:
+            x = x.replace("\">", "\" value=\"\" groups=\"g\">")
+        print x
+    
+except Exception, e:
+    print e
+
+H="makeGroups"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    for x in range(len(input)):
+        print "  <group label=\"g" + str(x+1) + "\">" + re.sub(r"^[a-zA-Z0-9]+(\.|:)|^[a-zA-Z0-9]+[a-zA-Z0-9]+(\.|:)", "", input[x]).strip() + "</group>"
+    
+except Exception, e:
+    print e
+
+H="makeNetsLabels"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #SAVE ORIGINAL INPUT TO PRINT IT OUT, UNMODIFIED LATER
+    input_original = input
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    #SET UP ARRAY TO STORE THE ROW/COLUMN LABELS OF THE NETS
+    output = []
+    
+    #LOOP THROUGH THE ROWS/COLS AND SAVE THE LABELS IN THE OUTPUT ARRAY
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+        if "<row" in input[x]:
+            output.append(re.sub("<row label=\"", "", input[x]).strip().split("\">")[0])
+        elif "<col" in input[x]:
+            output.append(re.sub("<col label=\"", "", input[x]).strip().split("\">")[0])
+    
+    #PRINT THE NET TAG, WITH THE CORRECT LABELS INSERTED
+    print "  <net label=\"\" labels=\"%s\"></net>" % ','.join(output)
+    #PRINT THE ORIGINAL INPUT (ROWS/COLS)
+    print input_original
+    
+except Exception, e:
+    print e
+
+H="makeNetsIndices"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    for x in range(len(input)):
+        print "  <net label=\"\" indices=\"\">%s</net>" % re.sub(r"^[a-zA-Z0-9]+(\.|:)|^[a-zA-Z0-9]+[a-zA-Z0-9]+(\.|:)", "", input[x]).strip()
+    
+except Exception, e:
+    print e
+
+H="makeRows"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"25\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <row label=\"r%s\"%s>%s</row>" % (str(count+1), extra, input[count].strip())
+        count += 1
+except Exception, e:
+    print e
+
+
+H="makeRowsEBAY"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"45\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <row label=\"r%s\"%s>%s</row>" % (str(count+1), extra, input[count].strip())
+        count += 1
+except Exception, e:
+    print e
+
+
+H="makeRowsMatchLabel"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+        
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    count = 0
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES
+         if len(parts) == 2: 
+           content = parts[1].strip()
+
+
+         extra=""
+
+         if "other" in content.lower() and "specify" in content.lower():
+           extra=' open=\"1\" openSize=\"25\" randomize=\"0\"'
+
+         #COMPOSE ROW
+         if ordinal[0].isalpha() and (len(parts) == 2):
+           print "  <row label=\"%s\"%s>%s</row>" % (ordinal, extra, content)
+         elif ordinal[0].isdigit():
+           print "  <row label=\"r%s\"%s>%s</row>" % (ordinal, extra, content)
+         elif (len(parts) == 2):
+           print "  <row label=\"%s\"%s>%s</row>" % (ordinal, extra, content)
+         else:
+           count += 1
+           print "  <row label=\"r%s\"%s>%s</row>" % (str(count), extra, line)
+
+except Exception, e:
+    print "makeRows clip failed:"
+    print e
+
+
+H="makeRowsMatchLabelEBAY"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+        
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    count = 0
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES
+         if len(parts) == 2: 
+           content = parts[1].strip()
+
+
+         extra=""
+
+         if "other" in content.lower() and "specify" in content.lower():
+           extra=' open=\"1\" openSize=\"45\" randomize=\"0\"'
+
+         #COMPOSE ROW
+         if ordinal[0].isalpha() and (len(parts) == 2):
+           print "  <row label=\"%s\"%s>%s</row>" % (ordinal, extra, content)
+         elif ordinal[0].isdigit():
+           print "  <row label=\"r%s\"%s>%s</row>" % (ordinal, extra, content)
+         elif (len(parts) == 2):
+           print "  <row label=\"%s\"%s>%s</row>" % (ordinal, extra, content)
+         else:
+           count += 1
+           print "  <row label=\"r%s\"%s>%s</row>" % (str(count), extra, line)
+
+except Exception, e:
+    print "makeRows clip failed:"
+    print e
+
+
+H="makeRowsValues"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+       
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES 
+         content = parts[1].strip()
+
+         extra=""
+
+         if "other" in content.lower() and "specify" in content.lower():
+           extra=' open=\"1\" openSize=\"25\" randomize=\"0\"'
+
+         #COMPOSE ROW
+         print "  <row label=\"r%s\" value=\"%s\"%s>%s</row>" % (ordinal,ordinal, extra, content)
+
+
+except Exception, e:
+    print "makeRowsNielsen clip failed:"
+    print e
+
+
+H="makeRowsValuesEBAY"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+       
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES 
+         content = parts[1].strip()
+
+         extra=""
+
+         if "other" in content.lower() and "specify" in content.lower():
+           extra=' open=\"1\" openSize=\"45\" randomize=\"0\"'
+
+         #COMPOSE ROW
+         print "  <row label=\"r%s\" value=\"%s\"%s>%s</row>" % (ordinal,ordinal, extra, content)
+
+
+except Exception, e:
+    print "makeRowsNielsen clip failed:"
+    print e
+
+
+H="makeRowsLow"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    for x in input:
+
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"25\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <row label=\"r%s\" value=\"%s\"%s>%s</row>" % (str(count+1), count+1, extra, x.strip())
+        count += 1
+    
+    
+except Exception, e:
+    print e
+
+H="makeRowsLowEBAY"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    for x in input:
+
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"45\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <row label=\"r%s\" value=\"%s\"%s>%s</row>" % (str(count+1), count+1, extra, x.strip())
+        count += 1
+    
+    
+except Exception, e:
+    print e
+
+H="makeRowsHigh"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    length = len(input)
+    
+    for x in input:
+
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"25\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <row label=\"r%s\" value=\"%s\"%s>%s</row>" % (str(length - count), length - count, extra, x.strip())
+        count += 1
+    
+except Exception, e:
+    print e
+
+H="makeRowsHighEBAY"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    length = len(input)
+    
+    for x in input:
+
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"45\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <row label=\"r%s\" value=\"%s\"%s>%s</row>" % (str(length - count), length - count, extra, x.strip())
+        count += 1
+    
+except Exception, e:
+    print e
+
+H="makeRes"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        print "<res label=\"\">%s</res>" % input[count].strip()
+        count += 1
+except Exception, e:
+    print e
+
+H="makeNAMatchLabel"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+        
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    count = 0
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES
+         if len(parts) == 2: 
+           content = parts[1].strip()
+
+         #COMPOSE ROW
+         if ordinal[0].isalpha() and (len(parts) == 2):
+           print "  <noanswer label=\"%s\">%s</noanswer>" % (ordinal, content)
+         elif ordinal[0].isdigit():
+           print "  <noanswer label=\"r%s\">%s</noanswer>" % (ordinal, content)
+         elif (len(parts) == 2):
+           print "  <noanswer label=\"%s\">%s</noanswer>" % (ordinal, content)
+         else:
+           count += 1
+           print "  <noanswer label=\"r%s\">%s</noanswer>" % (str(count), line)
+
+except Exception, e:
+    print "makeRows clip failed:"
+    print e
+
+
+H="makeNetsValues"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    for x in range(len(input)):
+        print "  <net label=\"\" values=\"\">%s</net>" % re.sub(r"^[a-zA-Z0-9]+(\.|:)|^[a-zA-Z0-9]+[a-zA-Z0-9]+(\.|:)", "", input[x]).strip()
+    
+except Exception, e:
+    print e
+
+H="makeLi"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        print "  <li>%s</li>" % input[count].strip()
+        count += 1
+except Exception, e:
+    print e
+
+H="makeCols"
+try:
+        from sys import stdin
+        import re
+        input = stdin.read()
+        
+        #CLEAN UP THE TABS
+        input = re.sub("\t+", " ", input)
+        
+        #CLEAN UP SPACES
+        input = re.sub("\n +\n", "\n\n", input)
+        
+        #CLEAN UP THE EXTRA LINE BREAKS
+        input = re.sub("\n{2,}", "\n", input)
+        
+        input = input.strip().split("\n")
+        
+        for x in range(0,len(input)):
+            input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+        count = 0
+        for x in input:
+          if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+            extra=' open=\"1\" openSize=\"10\" randomize=\"0\"'
+          else:
+            extra = ''
+
+            print "  <col label=\"c%s\"%s>%s</col>" % (str(count+1), extra, input[count].strip())
+            count += 1
+except Exception, e:
+        print e
+    
+
+H="makeColsMatchLabel"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+        
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    count = 0
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES
+         if len(parts) == 2: 
+           content = parts[1].strip()
+
+         extra=""
+
+         if "other" in content.lower() and "specify" in content.lower():
+           extra=' open=\"1\" openSize=\"10\" randomize=\"0\"'
+
+         #COMPOSE ROW
+         if ordinal[0].isalpha() and (len(parts) == 2):
+           print "  <col label=\"%s\"%s>%s</col>" % (ordinal, extra, content)
+         elif ordinal[0].isdigit():
+           print "  <col label=\"c%s\"%s>%s</col>" % (ordinal, extra, content)
+         else:
+           count += 1
+           print "  <col label=\"c%s\"%s>%s</col>" % (str(count), extra, line)
+
+except Exception, e:
+    print "makeRows clip failed:"
+    print e
+
+
+H="makeColsValues"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+        
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES 
+         content = parts[1].strip()
+
+         extra=""
+
+         if "other" in content.lower() and "specify" in content.lower():
+           extra=' open=\"1\" openSize=\"10\" randomize=\"0\"'
+
+         #COMPOSE COLUMN
+         print "  <col label=\"c%s\" value=\"%s\"%s>%s</col>" % (ordinal,ordinal, extra, content)
+
+
+except Exception, e:
+    print "makeColumnsValues clip failed:"
+    print e
+
+
+H="makeColsHigh"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    length = len(input)
+    
+    for x in input:
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"10\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <col label=\"c%s\" value=\"%s\"%s>%s</col>" % (str(length - count), length - count, extra, x.strip())
+        count += 1
+    
+except Exception, e:
+    print e
+
+H="makeColsLow"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    for x in input:
+        if "other" in input[count].strip().lower() and "specify" in input[count].strip().lower():
+          extra=' open=\"1\" openSize=\"10\" randomize=\"0\"'
+        else:
+          extra = ''
+
+        print "  <col label=\"c%s\" value=\"%s\"%s>%s</col>" % (str(count+1), count+1, extra, x.strip())
+        count += 1
+    
+except Exception, e:
+    print e
+
+H="makeChoices"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+
+    input = input.strip().split("\n")
+
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        print "  <choice label=\"ch%s\">%s</choice>" % (str(count+1), input[count].strip())
+        count += 1
+except Exception, e:
+    print e
+
+
+H="makeChoicesValues"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+        
+    #CLEAN UP INITIAL SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP INITIAL SPACES AND THE EXTRA LINE BREAKS
+    input = re.sub("\n\s{2,}", "\n", input)
+
+    #SPLIT UP INTO ROWS
+    input = input.split("\n")
+
+    #ITERATE ROWS
+    for line in input:
+         line = line.strip()
+         #SPLIT ON WHITESPACE -- REMOVE LEADING AND TRAILING WS
+         parts = re.split(r"\s",line,1) 
+
+         #GET RID OF EXTRA SPACES
+         ordinal= parts[0].strip()
+         ordinal= ordinal.rstrip('.')
+         ordinal= ordinal.rstrip(')')
+
+         #GET RID OF EXTRA SPACES 
+         content = parts[1].strip()
+
+         #COMPOSE CHOICE
+         print "  <choice label=\"ch%s\" value=\"%s\">%s</choice>" % (ordinal,ordinal, content)
+
+
+except Exception, e:
+    print "makeChoicesNielsenValues clip failed:"
+    print e
+
+
+H="makeChoicesHigh"
+try:
+    from sys import stdin
+    import re
+    count = 0
+    
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+    
+    length = len(input)
+    
+    for x in input:
+        print "  <choice label=\"ch%s\" value=\"%s\">%s</choice>" % (str(length - count), length - count, x.strip())
+        count += 1
+except Exception, e:
+    print e
+
+
+H="makeChoicesLow"
+try:
+    from sys import stdin
+    import re
+    count = 0
+
+    input = stdin.read()
+
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+
+    input = input.strip().split("\n")
+
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "", input[x])
+
+    for x in input:
+        print "  <choice label=\"ch%s\" value=\"%s\">%s</choice>" % (str(count+1), count+1, x.strip())
+        count += 1
+except Exception, e:
+    print e
+
+
+H="addValues"
+try:
+    from sys import stdin
+    input = stdin.read().split("\n")
+    while "" in input:
+        del input[input.index("")]
+    count = 1
+    for x in input:
+        if "alt" in x:
+            x = x.replace("\" alt=\"", "\" value=\"\" alt=\"")
+            count += 1
+        else:
+            x = x.replace("\">", "\" value=\"\">")
+            count += 1
+        print x
+    
+except Exception, e:
+    print e
+
+H="makeCase"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        print "  <case label=\"r%s\" cond=\"\">%s</case>" % (str(count+1), input[count].strip())
+        count += 1
+    print "  <case label=\"r%s\" cond=\"1\">UNDEFINED</case>" % (str(count+1))
+except Exception, e:
+    print e
+
+
+H="makeNoAnswer"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read()
+    
+    #CLEAN UP THE TABS
+    input = re.sub("\t+", " ", input)
+    
+    #CLEAN UP SPACES
+    input = re.sub("\n +\n", "\n\n", input)
+    
+    #CLEAN UP THE EXTRA LINE BREAKS
+    input = re.sub("\n{2,}", "\n", input)
+    
+    input = input.strip().split("\n")
+    
+    for x in range(0,len(input)):
+        input[x] = re.sub("^[a-zA-Z0-9]{1,2}[\.:\)][ \t]+", "\n", input[x])
+    count = 0
+    for x in input:
+        print "  <noanswer label=\"n%s\">%s</noanswer>" % (str(count+1), input[count].strip())
+        count += 1
+except Exception, e:
+    print e
+
+H="addValuesHigh"
+try:
+    from sys import stdin
+    input = stdin.read().split("\n")
+    while "" in input:
+        del input[input.index("")]
+    length = len(input)
+    count = 0
+    for x in input:
+        if "<alt" in x:
+            x = x.replace("\" alt=\"", "\" value=\"" + str(length - count) + "\" alt=\"")
+            count += 1
+        else:
+            x = x.replace("\">", "\" value=\"" + str(length - count) + "\">")
+            count += 1
+        print x
+    
+except Exception, e:
+    print e
+
+H="addValuesLow"
+try:
+    from sys import stdin
+    input = stdin.read().split("\n")
+    while "" in input:
+        del input[input.index("")]
+    count = 1
+    for x in input:
+        if "<alt=" in x:
+            x = x.replace("\" alt=\"", "\" value=\"" + str(count) + "\" alt=\"")
+            count += 1
+        else:
+            x = x.replace("\">", "\" value=\"" + str(count) + "\">")
+            count += 1
+        print x
+except Exception, e:
+    print e
+
+
+H="relabel"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip("\n").split("\n")
+
+    startlabel = re.findall("label=['\"]\w+['\"]", input[0])[0].replace("label=","").strip("\"'") # get first label
+    startelement = re.findall("<col|<row|<choice", input[0])[0]
+
+    nonalphalabel = re.sub("[a-zA-Z]*", "", startlabel) # get non-alpha components of first label
+
+    alphanum = False # first label does not contain numbers unless found otherwise
+    if nonalphalabel.isdigit():
+        startindex = int(nonalphalabel) # we'll increment from numeric portion of the first label (e.g. the "0" in "r0")
+        alphanum = True
+    else:
+        startindex = ord(startlabel) # we'll increment from the alphabetical label (e.g. "A" if the first label is "A")
+
+# the new labels with either be incremented from the numeric portion of the first label
+# or, they'll be incremented from a length == 1 alphabetical label
+    cnt=-1
+    for i in range(len(input)):
+        if re.search(startelement, input[i].strip()):
+          cnt+=1
+          newlabel = re.sub("[0-9]+", str(startindex + cnt), startlabel) if alphanum else chr(startindex + cnt)
+          input[i] = re.sub("label=['\"]\w+['\"]", "label=\"%s\"" % newlabel, input[i])
+
+    print "\n".join(input)
+
+except Exception, e:
+    print e
+
+H="addGroups"
+try:
+    from sys import stdin
+    input = stdin.read().split("\n")
+    while "" in input:
+        del input[input.index("")]
+    for x in input:
+        if "alt=" in x:
+            x = x.replace(" alt=\"", " groups=\"g\" alt=\"")
+        else:
+            x = x.replace("\">", "\" groups=\"g\">")
+        print x
+except Exception, e:
+    print e
+
+
+H="makeRadio"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    # get rid of blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    
+    # see if there is a number
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #capture the title
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    # remove title from input
+    input = input.replace(title, "")
+
+    output = input
+    #test for and adjust comment for 2d question
+    if "<comment>" not in input:
+        if ("<row" in output) and ("<col" in output):
+            comment = "<comment>Select one in each row</comment>\n"
+        else:
+            comment = "<comment>Select one</comment>\n"
+
+    # compose our new radio question
+    if "<comment>" not in input:
+      print "<radio label=\"%s\">\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+      print "<radio label=\"%s\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print "makeRadio clip failed:"
+    print e
+
+
+H="makeRadioHAP"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    # get rid of blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    
+    # see if there is a number
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #capture the title
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    # remove title from input
+    input = input.replace(title, "")
+
+
+
+    output = input
+    #test for and adjust comment for 2d question
+    if "<comment>" not in input:
+        if ("<row" in output) and ("<col" in output):
+            comment = "<comment>Select one in each row</comment>\n"
+        else:
+            comment = "<comment>Select one</comment>\n"
+
+    rowlegend = ""
+
+    if ("<row" in output) and not ("<col" in output):
+        rowlegend=' rowLegend=\"right\"'
+
+    # compose our new radio question
+    if "<comment>" not in input:
+      print "<radio label=\"%s\"%s>\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), rowlegend, title.strip(), comment, output)
+    else:
+      print "<radio label=\"%s\"%s>\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), rowlegend, title.strip(), output)
+    
+except Exception, e:
+    print "makeRadio clip failed:"
+    print e
+
+
+H="makeRadioCMB"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    rowCount = len(input.split("<row"))-1
+    colCount = len(input.split("<col"))-1
+
+    # get rid of blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    
+    # see if there is a number
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #capture the title
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    # remove title from input
+    input = input.replace(title, "")
+
+    output = input
+    #test for and adjust comment for 2d question
+    if "<comment>" not in input:
+        if ("<row" in output) and ("<col" in output):
+            comment = "<comment>Select one in each row</comment>\n"
+        else:
+            comment = "<comment>Select one</comment>\n"
+
+    if (("<row" in output) and ("<col" in output) and (colCount > 1)) or not ("<row" in output):
+        style = ''
+    else:
+        style = ' style=\"noGrid\" ss:questionClassNames=\"flexGrid\"'
+
+    # compose our new radio question
+    if "<comment>" not in input:
+      print "<radio label=\"%s\"%s>\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), style, title.strip(), comment, output)
+    else:
+      print "<radio label=\"%s\"%s>\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), style, title.strip(), output)
+    
+except Exception, e:
+    print "makeRadio clip failed:"
+    print e
+
+
+H="makeRadioFMA"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    # get rid of blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    
+    # see if there is a number
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #capture the title
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    # remove title from input
+    input = input.replace(title, "")
+
+    output = input
+
+    # compose our new radio question
+    print "<radio label=\"%s\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print "makeRadio clip failed:"
+    print e
+
+
+H="makeRadioSRG"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    # get rid of blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    
+    # see if there is a number
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #capture the title
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    # remove title from input
+    input = input.replace(title, "")
+
+    output = input
+    #test for and adjust comment for 2d question
+    if "<comment>" not in input:
+        if ("<row" in output) and ("<col" in output):
+            comment = "<comment>Please select one in each row</comment>\n"
+        else:
+            comment = "<comment>Please select one</comment>\n"
+
+    # compose our new radio question
+    if "<comment>" not in input:
+      print "<radio label=\"%s\">\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+      print "<radio label=\"%s\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print "makeRadio clip failed:"
+    print e
+
+
+H="makeRating"
+try:
+
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    if label[0].isdigit():
+        label = "Q" + label
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    input = input.replace(title, "")
+
+    output = input
+    shffl = ""
+    style = ""
+    
+    #DETERMINE IF WE NEED A 1D OR 2D COMMENT, SHUFFLE 2D ROWS OR COLS, ADD AVERAGES attribute.
+    if (("row" in output) or ("rows" in output)) and (("col" in output) or ("cols" in output)):
+        comment = "<comment>Select one in each row</comment>\n"
+        s = output.split("    ")
+        for x in s:
+            if x.count("value=") > 0:
+                if x.count("<col") > 0:
+                    shffl = " shuffle=\"rows\""
+                elif x.count("<row") > 0:
+                    shffl = " shuffle=\"cols\""
+    else:
+        comment = "<comment>Select one</comment>\n"
+
+    if "<comment>" not in input:
+        print "<radio label=\"%s\"%s%s type=\"rating\">\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), comment, output)
+    else:
+        print "<radio label=\"%s\"%s%s type=\"rating\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), output)
+
+except Exception, e:
+    print e
+
+H="makeRatingHAP"
+try:
+
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    if label[0].isdigit():
+        label = "Q" + label
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    input = input.replace(title, "")
+
+    output = input
+    shffl = ""
+    style = ""
+    
+    #DETERMINE IF WE NEED A 1D OR 2D COMMENT, SHUFFLE 2D ROWS OR COLS, ADD AVERAGES attribute.
+    if ("<row" in output) and ("<col" in output):
+        comment = "<comment>Select one in each row</comment>\n"
+        s = output.split("    ")
+        for x in s:
+            if x.count("value=") > 0:
+                if x.count("<col") > 0:
+                    shffl = " shuffle=\"rows\""
+                elif x.count("<row") > 0:
+                    shffl = " shuffle=\"cols\""
+    else:
+        comment = "<comment>Select one</comment>\n"
+
+    rowlegend=""
+
+    if ("<row" in output) and not ("<col" in output):
+        rowlegend=' rowLegend=\"right\"'
+
+    if "<comment>" not in input:
+        print "<radio label=\"%s\"%s%s type=\"rating\"%s>\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), rowlegend, shffl, style, title.strip(), comment, output)
+    else:
+        print "<radio label=\"%s\"%s%s type=\"rating\"%s>\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), rowlegend, shffl, style, title.strip(), output)
+
+except Exception, e:
+    print e
+
+H="makeRatingCMB"
+try:
+
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    rowCount = len(input.split("<row"))-1
+    colCount = len(input.split("<col"))-1
+
+    if label[0].isdigit():
+        label = "Q" + label
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    input = input.replace(title, "")
+
+    output = input
+    shffl = ""
+    
+    #DETERMINE IF WE NEED A 1D OR 2D COMMENT, SHUFFLE 2D ROWS OR COLS, ADD AVERAGES attribute.
+    if ("<row" in output) and ("<col" in output):
+        comment = "<comment>Select one in each row</comment>\n"
+        s = output.split("    ")
+        for x in s:
+            if x.count("value=") > 0:
+                if x.count("<col") > 0:
+                    shffl = " shuffle=\"rows\""
+                elif x.count("<row") > 0:
+                    shffl = " shuffle=\"cols\""
+    else:
+        comment = "<comment>Select one</comment>\n"
+
+    if (("<row" in output) and ("<col" in output) and (colCount > 1)) or not ("<row" in output):
+        style = ''
+    else:
+        style = ' style=\"noGrid\" ss:questionClassNames=\"flexGrid\"'
+
+    if "<comment>" not in input:
+        print "<radio label=\"%s\"%s%s type=\"rating\">\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), comment, output)
+    else:
+        print "<radio label=\"%s\"%s%s type=\"rating\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), output)
+
+except Exception, e:
+    print e
+
+H="makeRatingFMA"
+try:
+
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    if label[0].isdigit():
+        label = "Q" + label
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    input = input.replace(title, "")
+
+    output = input
+    shffl = ""
+    style = ""
+    
+    print "<radio label=\"%s%s%s\" type=\"rating\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), output)
+
+except Exception, e:
+    print e
+
+H="makeRatingSRG"
+try:
+
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    if label[0].isdigit():
+        label = "Q" + label
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    input = input.replace(title, "")
+
+    output = input
+    shffl = ""
+    style = ""
+    
+    #DETERMINE IF WE NEED A 1D OR 2D COMMENT, SHUFFLE 2D ROWS OR COLS, ADD AVERAGES attribute.
+    if (("row" in output) or ("rows" in output)) and (("col" in output) or ("cols" in output)):
+        comment = "<comment>Please select one in each row</comment>\n"
+        s = output.split("    ")
+        for x in s:
+            if x.count("value=") > 0:
+                if x.count("<col") > 0:
+                    shffl = " shuffle=\"rows\""
+                elif x.count("<row") > 0:
+                    shffl = " shuffle=\"cols\""
+    else:
+        comment = "<comment>Please select one</comment>\n"
+
+    if "<comment>" not in input:
+        print "<radio label=\"%s\"%s%s type=\"rating\">\n  <title>%s</title>\n  %s  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), comment, output)
+    else:
+        print "<radio label=\"%s\"%s%s type=\"rating\">\n  <title>%s</title>\n  %s\n</radio>\n<suspend/>" % (label.strip(), shffl, style, title.strip(), output)
+
+except Exception, e:
+    print e
+
+H="makeCheckbox"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    # isolate the label
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    # isolate the rest
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+    
+    # remove spaces
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    # add a q to the label if its a digit
+    if label[0].isdigit():
+        label = "Q" + label
+
+    # isolate the title from either a macro or a bunch of rows or columns
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+    
+    # take the title out of the input
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output2 = input
+
+    nota_array = [">None of the above",">None of these"]
+    for nota in nota_array:
+      if nota in output2:
+        repwith = " exclusive=\"1\" randomize=\"0\"" + nota
+        output = output2.replace(nota,repwith)
+        output2 = output
+      else:
+        output = output2
+
+    # set the appropriate comment
+    comment = "<comment>Select all that apply</comment>\n"
+
+    # compose the question
+    if "<comment>" not in input:
+        print "<checkbox label=\"%s\" atleast=\"1\">\n  <title>%s</title>\n  %s  %s\n</checkbox>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+        print "<checkbox label=\"%s\" atleast=\"1\">\n  <title>%s</title>\n  %s\n</checkbox>\n<suspend/>" % (label.strip(), title.strip(), output)
+except Exception, e:
+    print e
+
+H="makeCheckboxCMB"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    # isolate the label
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    # isolate the rest
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    rowCount = len(input.split("<row"))-1
+    colCount = len(input.split("<col"))-1
+    
+    # remove spaces
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    # add a q to the label if its a digit
+    if label[0].isdigit():
+        label = "Q" + label
+
+    # isolate the title from either a macro or a bunch of rows or columns
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+    
+    # take the title out of the input
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output2 = input
+
+    nota_array = [">None of the above",">None of these"]
+    for nota in nota_array:
+      if nota in output2:
+        repwith = " exclusive=\"1\" randomize=\"0\"" + nota
+        output = output2.replace(nota,repwith)
+        output2 = output
+      else:
+        output = output2
+
+    # set the appropriate comment
+    comment = "<comment>Select all that apply</comment>\n"
+
+    if ("<row" in output) and ("<col" in output) and (colCount > 1):
+        style = ''
+    else:
+        style = ' style=\"noGrid\" ss:questionClassNames=\"flexGrid\"'
+
+    # compose the question
+    if "<comment>" not in input:
+        print "<checkbox label=\"%s\"%s atleast=\"1\">\n  <title>%s</title>\n  %s  %s\n</checkbox>\n<suspend/>" % (label.strip(), style, title.strip(), comment, output)
+    else:
+        print "<checkbox label=\"%s\"%s atleast=\"1\">\n  <title>%s</title>\n  %s\n</checkbox>\n<suspend/>" % (label.strip(), style, title.strip(), output)
+except Exception, e:
+    print e
+
+H="makeCheckboxHAP"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    # isolate the label
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    # isolate the rest
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+    
+    # remove spaces
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    # add a q to the label if its a digit
+    if label[0].isdigit():
+        label = "Q" + label
+
+    # isolate the title from either a macro or a bunch of rows or columns
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+    
+    # take the title out of the input
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output2 = input
+
+    nota_array = [">None of the above",">None of these"]
+    for nota in nota_array:
+      if nota in output2:
+        repwith = " exclusive=\"1\" randomize=\"0\"" + nota
+        output = output2.replace(nota,repwith)
+        output2 = output
+      else:
+        output = output2
+
+    # set the appropriate comment
+    comment = "<comment>Select all that apply</comment>\n"
+
+    rowlegend=""
+
+    if ("<row" in output) and not ("<col" in output):
+        rowlegend=' rowLegend=\"right\"'
+
+    # compose the question
+    if "<comment>" not in input:
+        print "<checkbox label=\"%s\" atleast=\"1\"%s>\n  <title>%s</title>\n  %s  %s\n</checkbox>\n<suspend/>" % (label.strip(), rowlegend, title.strip(), comment, output)
+    else:
+        print "<checkbox label=\"%s\" atleast=\"1\"%s>\n  <title>%s</title>\n  %s\n</checkbox>\n<suspend/>" % (label.strip(), rowlegend, title.strip(), output)
+except Exception, e:
+    print e
+
+H="makeCheckboxFMA"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    # isolate the label
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    # isolate the rest
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+    
+    # remove spaces
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    # add a q to the label if its a digit
+    if label[0].isdigit():
+        label = "Q" + label
+
+    # isolate the title from either a macro or a bunch of rows or columns
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+    
+    # take the title out of the input
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output2 = input
+
+    nota_array = [">None of the above",">None of these"]
+    for nota in nota_array:
+      if nota in output2:
+        repwith = " exclusive=\"1\" randomize=\"0\"" + nota
+        output = output2.replace(nota,repwith)
+        output2 = output
+      else:
+        output = output2
+
+    # compose the question
+    print "<checkbox label=\"%s\" atleast=\"1\">\n  <title>%s</title>\n  %s\n</checkbox>\n<suspend/>" % (label.strip(), title.strip(), output)
+
+except Exception, e:
+    print e
+
+H="makeCheckboxSRG"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    # isolate the label
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    # isolate the rest
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+    
+    # remove spaces
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    # add a q to the label if its a digit
+    if label[0].isdigit():
+        label = "Q" + label
+
+    # isolate the title from either a macro or a bunch of rows or columns
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+    
+    # take the title out of the input
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output2 = input
+
+    nota_array = [">None of the above",">None of these"]
+    for nota in nota_array:
+      if nota in output2:
+        repwith = " exclusive=\"1\" randomize=\"0\"" + nota
+        output = output2.replace(nota,repwith)
+        output2 = output
+      else:
+        output = output2
+
+    # set the appropriate comment
+    comment = "<comment>Please select all that apply</comment>\n"
+
+    # compose the question
+    if "<comment>" not in input:
+        print "<checkbox label=\"%s\" atleast=\"1\">\n  <title>%s</title>\n  %s  %s\n</checkbox>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+        print "<checkbox label=\"%s\" atleast=\"1\">\n  <title>%s</title>\n  %s\n</checkbox>\n<suspend/>" % (label.strip(), title.strip(), output)
+except Exception, e:
+    print e
+
+H="makeSelect"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    #isolate label and the rest
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+    
+    #remove extra blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    #Add a q if the first character is a digit
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #isolate the title
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        input_index = min(input_array)
+        title = input[0:input_index]
+
+    #remove the title
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output = "\n  " + input
+
+    # compose the select question
+    print "<select label=\"%s\" optional=\"0\">\n  <title>%s</title>  %s\n</select>\n<suspend/>" % (label.strip(), title.strip(), output)
+
+
+except Exception, e:
+    print e
+
+H="makeTextarea"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #ISOLATE TITLE TO MACRO OR QUESTION ELEMENT OPEN ANGLE BRACKET
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    #REMOVE THE TITLE TEXT
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output = input
+    if output != "":
+      output = "  " + output + "\n"
+
+    #COMPOSE OUR QUESTION
+    if "<comment>" not in input:
+        comment = "<comment>Please be as specific as possible</comment>"
+        print "<textarea label=\"%s\" optional=\"0\">\n  <title>%s</title>\n  %s\n%s</textarea>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+        print "<textarea label=\"%s\" optional=\"0\">\n  <title>%s</title>\n%s</textarea>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print "makeTextarea failed"    
+    print e
+
+
+H="makeTextareaFMA"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #ISOLATE TITLE TO MACRO OR QUESTION ELEMENT OPEN ANGLE BRACKET
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    #REMOVE THE TITLE TEXT
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output = input
+    if output != "":
+      output = "  " + output + "\n"
+
+    #COMPOSE OUR QUESTION
+    print "<textarea label=\"%s\" optional=\"0\">\n  <title>%s</title>\n%s</textarea>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print "makeTextarea failed"    
+    print e
+
+
+H="makeText"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #ISOLATE TITLE TO MACRO OR QUESTION ELEMENT OPEN ANGLE BRACKET
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    #REMOVE THE TITLE TEXT
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output = input
+    if output != "":
+      output = "  " + output + "\n"
+
+    #COMPOSE OUR QUESTION
+    if "<comment>" not in input:
+        comment = "<comment>Please be as specific as possible</comment>\n"
+        print "<text label=\"%s\" size=\"40\" optional=\"0\">\n  <title>%s</title>\n  %s  %s</text>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+        print "<text label=\"%s\" size=\"40\" optional=\"0\">\n  <title>%s</title>\n  %s</text>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print e
+
+H="makeTextCMB"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    rowCount = len(input.split("<row"))-1
+    colCount = len(input.split("<col"))-1
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #ISOLATE TITLE TO MACRO OR QUESTION ELEMENT OPEN ANGLE BRACKET
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    #REMOVE THE TITLE TEXT
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output = input
+
+    if (("<row" in output) and ("<col" in output) and (colCount > 1)) or not ("<row" in output):
+        style = ''
+    else:
+        style = ' style=\"noGrid\"'
+
+    #COMPOSE OUR QUESTION
+    if "<comment>" not in input:
+        comment = "<comment>Please be as specific as possible</comment>\n"
+        print "<text label=\"%s\" size=\"40\" optional=\"0\"%s>\n  <title>%s</title>\n  %s  %s\n</text>\n<suspend/>" % (label.strip(), style, title.strip(), comment, output)
+    else:
+        print "<text label=\"%s\" size=\"40\" optional=\"0\"%s>\n  <title>%s</title>\n  %s\n</text>\n<suspend/>" % (label.strip(), style, title.strip(), output)
+    
+except Exception, e:
+    print e
+
+H="makeTextFMA"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    if label[0].isdigit():
+        label = "Q" + label
+
+    #ISOLATE TITLE TO MACRO OR QUESTION ELEMENT OPEN ANGLE BRACKET
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    #REMOVE THE TITLE TEXT
+    input = input.replace(title, "")
+
+    # add the all important line breakage
+    output = input
+    if output != "":
+      output = "  " + output + "\n"
+
+    #COMPOSE OUR QUESTION
+    print "<text label=\"%s\" size=\"40\" optional=\"0\">\n  <title>%s</title>\n%s</text>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print e
+
+H="makeNumber"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+ 
+    if label[0].isdigit():
+        label = "Q" + label
+
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    input = input.replace(title, "")
+    output = input
+    if output != "":
+      output = "  " + output + "\n"
+
+    if "<comment>" not in input:
+        comment = "<comment>Please enter a whole number</comment>\n"
+        print "<number label=\"%s\" size=\"3\" optional=\"0\">\n  <title>%s</title>\n  %s%s</number>\n<suspend/>" % (label.strip(), title.strip(), comment, output)
+    else:
+        print "<number label=\"%s\" size=\"3\" optional=\"0\">\n  <title>%s</title>\n%s</number>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print e
+
+H="makeNumberFMA"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+
+    input = re.sub(r"^(\w?\d+)\.(\d+)",r"\1_\2",input)
+
+    label = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[1]
+    input = re.split(r"^([a-zA-Z0-9-_]+)+(\.|:|\)|\s)", input, 1)[-1]
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+ 
+    if label[0].isdigit():
+        label = "Q" + label
+
+    if "@" in input:
+        title = input[0:(input.index("@"))]
+    else:
+        input_array = []
+        if "<row" in input:
+            input_array.append(input.index("<row"))
+        if "<col" in input:
+            input_array.append(input.index("<col"))
+        if "<choice" in input:
+            input_array.append(input.index("<choice"))
+        if "<comment" in input:
+            input_array.append(input.index("<comment"))
+        if "<group" in input:
+            input_array.append(input.index("<group"))
+        if "<net" in input:
+            input_array.append(input.index("<net"))
+        if "<exec" in input:
+            input_array.append(input.index("<exec"))
+        if len(input_array) == 0:
+            title = input
+        else:
+          input_index = min(input_array)
+          title = input[0:input_index]
+
+    input = input.replace(title, "")
+    output = input
+    if output != "":
+      output = "  " + output + "\n"
+
+    print "<number label=\"%s\" size=\"3\" optional=\"0\">\n  <title>%s</title>\n%s</number>\n<suspend/>" % (label.strip(), title.strip(), output)
+    
+except Exception, e:
+    print e
+
+H="makePipe"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip()
+    
+    # get rid of blank lines
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    output = input
+
+    # compose our new pipe tag
+    print "<pipe label=\"\" capture=\"\">\n  %s\n</pipe>\n" % (output)
+    
+except Exception, e:
+    print "makePipe clip failed:"
+    print e
+
+
+H="addLoopBlock"
+try:
+    from sys import stdin
+    import re
+
+    input = stdin.read().strip()
+
+    input = re.sub(r'<(radio|checkbox|text|textarea|block|number|float|select|html)(.*) label="([^"]*)"',r'<\1\2 label="\3_[loopvar: label]"', input)
+
+    print """
+<loop label="" vars="" title=" " suspend="0">
+
+<block label="">
+
+%s
+
+</block>
+
+<looprow label="" cond="">
+  <loopvar name=""></loopvar>
+</looprow>
+
+</loop>
+
+""" % input
+    
+except Exception, e:
+    print e
+
+H="commentRows"
+try:
+    from sys import stdin
+    input = stdin.read()
+
+    while "\n\n" in input:
+        input = input.replace("\n\n", "\n")
+
+    while input[0] == "\n":
+        input = input[1:]
+
+    while input[-1] == "\n":
+        input = input[:-1]
+
+    print '\n'.join('<!--%s-->' % i.strip() for i in input.splitlines())
+except Exception, e:
+    print e
+
+
+
+
+
+H="swapRowCol"
+try:
+    from sys import stdin
+    import re
+    input = stdin.read().strip("\n").split("\n")
+
+    for i in range(len(input)):
+        if "<row" in input[i]:
+            objx = "row"
+            labx = "r"
+            objy = "col"
+            laby = "c"
+        elif "<col" in input[i]:
+            objx = "col"
+            labx = "c"
+            objy = "row"
+            laby = "r"
+        input[i] = re.sub("(<|\/)"+objx,'\\1'+objy,input[i])
+        input[i] = re.sub("label=(\"|')"+labx+"(\\d)",'label=\\1'+laby+'\\2',input[i])
+    print "\n".join(input)
+except Exception, e:
+    print e
